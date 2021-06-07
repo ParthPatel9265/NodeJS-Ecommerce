@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="display-4 text-center">Edit Book</div>
+        <div class="container">
+            <hr class="my-3">
+            <form method="POST" action="/book/edit/<%= book._id  %>">
+                <div class="form-group">
+                    <label for="Title">Title</label>
+                    <input required type="text" class="form-control" id="Title" name="title" value="<%= book.title%>">
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Image Url</label>
+                    <input required type="url" class="form-control" id="image" name="image" value="<%= book.image %> ">
+                  </div>
+                  <div class="form-group">
+                      <label for="description">Description</label>
+                      <textarea required name="description" class="form-control" id="description" rows="3"><%= book.description%></textarea>
+                    </div>
+                  <div class="form-group">
+                      <label class="form-check-label" for="price">Price</label>
+                      <input required type="number" name="price" class="form-control" id="Title" value="<%= book.price %>">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                
+
+            </form>
+        </div>
+    </div>   
+</body>
+</html>

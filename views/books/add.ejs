@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="display-4 text-center">Add Book</div>
+        <div class="container">
+            <hr class="my-3">
+            <form method="POST" action="/book/add">
+                <div class="form-group">
+                    <label for="Title">Title</label>
+                    <input required type="text" class="form-control" id="Title" name="title" >
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Image Url</label>
+                    <input required type="url" class="form-control" id="image" name="image" >
+                  </div>
+                  <div class="form-group">
+                      <label for="description">Description</label>
+                      <textarea required name="description" class="form-control" id="description" rows="3"></textarea>
+                    </div>
+                  <div class="form-group">
+                      <label class="form-check-label" for="price">Price</label>
+                      <input required type="number" name="price" class="form-control" id="Title" >
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="min-width: 30%;">Submit</button>
+            </form>
+        </div>
+    </div>   
+</body>
+</html>
