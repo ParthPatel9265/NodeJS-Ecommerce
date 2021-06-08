@@ -1,3 +1,46 @@
 input{
     width: auto;
 }
+/* .navbar{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+} */
+
+::-webkit-scrollbar{
+    width: 0;
+}
+
+.nameofuser{
+    font-weight: 400; 
+}
+.books{
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-row-gap: 2em;
+}
+.books > .card{
+    justify-self: center;
+}
+.capital{
+    text-transform: capitalize;
+}
+
+.view-back-btn{
+    right:1em ;
+    top:1em;
+}
+
+@media only screen and (max-width: 600px){
+    .books {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center
+    }
+    .books .card{
+        margin: 1em 0;
+    }
+    .view-img-book{
+        margin-top: 2em;
+    }
+}

@@ -1,8 +1,14 @@
 
 const Book = require('../models/book');
 
-exports.getBooks = (req, res) => {
-    res.render('books/home');
+exports.getBooks = async(req, res) => {
+    try{
+    const books = await Book.find({});
+    res.render('books/home', {books: books,user:req.user});
+    }
+    catch(e){
+        console.log(e);
+    }
 }
 
 exports.getAdd =  (req, res) => {
@@ -50,6 +56,25 @@ exports.postEdit = async (req, res)=>{
         res.redirect('/admin');
     }catch(e){
         console.log(e);
-        res.render('books/edit', {book: book});
     }
 }
+
+exports.delete = async (req, res) => {
+    try{
+       await Book.findByIdAndDelete(req.params.id);
+       res.redirect('/admin');
+    }
+    catch(e){
+        console.log(e);
+        
+    }
+};
+exports.getBookDetails = async(req, res)=>{
+    try{
+        const book = await Book.findById(req.params.id);
+        res.render('books/bookdetails', {book: book, user: req.user});
+    }
+    catch(e){
+        console.log(e);
+    }
+};

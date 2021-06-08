@@ -1,1 +1,36 @@
-<h1>welcome</h1>
+<%- include('../includes/header.ejs') %>
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 lead">
+      Book Store
+    </span>
+    <span>
+      <% if(typeof user === 'undefined'){ %>
+          <a href="/user/login" class="btn btn-sm btn-primary">Login</a>
+      <% } else{%>
+        <span ><a href="" class="btn  btn-primary ">Dashboard</a></span> 
+      <% } %>
+    
+    </span>
+  </nav>
+  <div class="container">
+    <%- include('../includes/message.ejs') %>
+    <div class="jumbotron text-center my-1">
+        <h1 class="display-4 ml-2"> Books</h1>
+  
+    </div>
+    <br>
+    <div class="container mb-4 books">
+      <% books.forEach(book => { %>
+        <div class="card" style="width: 18rem; position: relative;">
+          <img  style="height: 15rem;" src="<%= book.image  %> " class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title"><%= book.title %></h5>
+            <h3 class="lead text-primary p-0" style="font-weight: 400;">Price: ₹ <%= book.price %></h3>
+            <hr class="my-2">
+            <a href="/book/bookdetails/<%= book._id %> " class="btn btn-primary">Book Details</a>
+          </div>
+      </div>
+     <% }) %> 
+    </div>
+  </div>
+  <%- include('../includes/footer.ejs') %>

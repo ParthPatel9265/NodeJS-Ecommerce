@@ -1,0 +1,28 @@
+<%- include('../includes/header.ejs') %>
+    <div class="container mt-2">
+        <div class="jumbotron position-relative">
+            <div class="row">
+               
+                <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                    <img style="width: 18rem;" src="<%= book.image %> " alt="" class="view-img-book img-responsive">
+                </div>
+                <div class="col-md-8">
+                    <h1 class="display-4 text-primary text-center"><%= book.title %></h1>
+                    <hr class="my-2">
+                    <p><%= book.description %></p>
+                    <h3 class="lead ">Price: ₹ <%= book.price %></h3>
+                    <hr class="mb-2">
+                    
+                    <% if(user.role ==='customer'){ %> 
+                    <form action="/users/cart/<%= book._id  %>?_method=PUT" class="d-inline" method="POST">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+               <% } %>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+
+
+    <%- include('../includes/footer.ejs') %>

@@ -3,8 +3,16 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 exports.getLogin = (req, res, next) => {
-    
-    res.render('users/login');
+    let message = req.flash('error');
+    if (message.length > 0) {
+      message = message[0];
+    } else {
+      message = null }
+
+    res.render('users/login',
+    {
+        errormsg : message
+    });
 };
 
 // exports.postLogin = async(req, res, next) => {

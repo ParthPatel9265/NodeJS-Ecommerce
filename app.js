@@ -1,19 +1,31 @@
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const session = require('express-session');
+
 const connectDB = require('./config/database');
+
+const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const passport = require('passport');
 const app = express();
 
-connectDB('mongodb+srv://parth:parth@2912@cluster0.a5bgq.mongodb.net/web?retryWrites=true&w=majority');
+
+const MONGODB_URI =
+'mongodb+srv://parth:parth@2912@cluster0.a5bgq.mongodb.net/web?retryWrites=true&w=majority';
+
+connectDB(MONGODB_URI);
 require('./config/passport')(passport);
+
+
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie:{
-        maxAge:2*60*1000
+    cookie: {
+       
+        maxAge:10000
     }
+   
 }));
 
 const userRoutes = require('./routes/user');
@@ -23,10 +35,12 @@ const bookRoutes = require('./routes/book');
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 
-
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.authenticate('remember-me'));
 
 app.use(flash());
 

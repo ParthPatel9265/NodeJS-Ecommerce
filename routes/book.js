@@ -16,5 +16,8 @@ router.get('/edit/:id',authorization ,bookController.getEdit);
 
 router.post('/edit/:id',authorization ,bookController.postEdit);
 
+router.delete('/delete/:id', authorization ,bookController.delete);
+
+router.get('/bookdetails/:id' ,bookController.getBookDetails);
 
 module.exports = router;
