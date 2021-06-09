@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 const path = require('path');
 const express = require('express');
 const userController = require('../controllers/user');
+const authenticate = require('../middleware/authenticate');
 const router = express.Router();
 const passport = require('passport');
+const uid = require('uid2');
 const Token = require('../models/Token');
-
+function generatetoken(number){
+   return uid(number);
+}
 
 router.get('/login', userController.getLogin);
 
@@ -22,15 +26,15 @@ router.post('/login',passport.authenticate('local', {
           return next();
        }
 
-     
-      var token = "12345";
+      let tokens = generatetoken(64)
       var tk = new Token({  
-        token: token,
+        token: tokens,
         userId:req.user.id
-      })
+      });
       tk.save(function(err) {
         if (err) { return done(err); }
-        res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); // 7 days - remember me 
+        console.log("hii hello");
+        res.cookie('remember_me', tokens, { path:'/', httpOnly: true, maxAge: 604800000});
         return next();
       });
     },
@@ -45,6 +49,16 @@ router.get('/signup', userController.getSignup);
 router.post('/signup', userController.postSignup);
 
 router.get('/logout', userController.logOut);
+
+router.get('/dashboard', authenticate ,userController.getDashboard);
+
+router.put('/cart/:id',authenticate,userController.addCart);
+
+router.delete('/cart/delete/:id', authenticate ,userController.getdeletefromCart);
+
+router.post('/checkout', authenticate ,userController.postCheckout);
+
+
 module.exports = router;
 
 

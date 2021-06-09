@@ -6,9 +6,22 @@
     <span>
       <% if(typeof user === 'undefined'){ %>
           <a href="/user/login" class="btn btn-sm btn-primary">Login</a>
-      <% } else{%>
-        <span ><a href="" class="btn  btn-primary ">Dashboard</a></span> 
+      <% } else {%>
+
+        <% if( user.role === 'customer'){ %>
+        <span ><a href="/user/dashboard" class="btn  btn-primary ">Dashboard</a></span> 
+        <% }else {%>
+
+      
+          <span ><a href="/admin" class="btn  btn-primary ">Dashboard</a></span> 
+          <% } %>
+         
+        <span ><a href="/user/logout" class="btn  btn-primary ">logout</a></span> 
+
+        
       <% } %>
+    
+
     
     </span>
   </nav>

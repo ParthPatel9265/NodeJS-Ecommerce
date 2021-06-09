@@ -20,6 +20,7 @@ const userSchema = mongoose.Schema({
     carts:[{
         book:{
             type: mongoose.Schema.Types.ObjectId,
+            ref:'Book'
         },
         quantity:{
             type: Number,

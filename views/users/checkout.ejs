@@ -1,0 +1,52 @@
+  
+<%- include ('../includes/header.ejs') %>
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 lead"  style="font-weight: 400!important;">
+          Book Store
+        </span>
+    <span>
+        <a href="/user/dashboard" class="btn btn-sm btn-info">Cancel</a>  
+    </span>
+  </nav>
+  <div class="container mt-3">
+        <div class="jumbotron p-3">
+            <div class="d-flex justify-content-around" style="font-size: 25px; ">
+                <span>Checkout Details</span> 
+            </div>
+            <div class="container mt-2">
+                <table class="table table-bordered bg-light table-responsive-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Price per Book</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% user.carts.forEach(product=>{ %>
+                                <tr>
+                                    <td><img src="<%= product.book.image  %>" alt="Book Cover" class="img-thumbnail" style="height: 8rem; width: 8rem;"></td>
+                                    <td><%= product.book.title  %> </td>
+                                    <td>₹ <%= product.book.price  %> </td>
+                                    <td>
+                                        <%= product.quantity %> 
+                                    </td>
+                                    <td>
+                                        ₹ <%= product.quantity * product.book.price  %> 
+                                    </td>
+                                </tr>
+                        <% }) %>
+                        <tr class="lead font-weight-bold text-info">
+                            <td colspan="4">Total</td>
+                            <td colspan="1"> ₹ <%= totalPrice  %> </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+          
+        </div>
+  </div>
+
+ <%- include ('../includes/footer.ejs') %>

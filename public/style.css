@@ -12,6 +12,9 @@ input{
     width: 0;
 }
 
+nav span {
+    font-weight: 400!important;
+}
 .nameofuser{
     font-weight: 400; 
 }

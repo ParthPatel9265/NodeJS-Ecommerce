@@ -23,7 +23,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
        
-        maxAge:10000
+        maxAge:5*1000
+        
     }
    
 }));
@@ -47,7 +48,6 @@ app.use(flash());
 app.get('/', (req, res) => {
      res.redirect('/user/login');
 });
-
 
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);

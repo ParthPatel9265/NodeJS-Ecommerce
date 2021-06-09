@@ -2,6 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const RememberMeStrategy = require('passport-remember-me').Strategy;
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const uid = require('uid2');
 const Token = require('../models/Token');
 const mongoose = require('mongoose');
 module.exports =  async (passport) => {
@@ -40,28 +41,30 @@ module.exports =  async (passport) => {
     })); 
     
 
-     passport.use(new RememberMeStrategy(
-       function(token, done) {
+    passport.use(new RememberMeStrategy(
+    function(token, done) {
       Token.findOne({ token: token }, function (err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false); }
         return done(null, user);
       });
       },
-      
+    
     function(user, done) {
-        var token = "34343";
+        console.log(user);
+        function generatetoken(number){
+            return uid(number);
+         }
+        tokens=  generatetoken(64);
         var tk1 = new Token({  
-          token: token,
-          userId:user.id
-        })
-      
-      tk1.save(function(err) {
-        if (err) { return done(err); }
-        return done(null, token);
-      });
-    }
-    ));
+            token: tokens,
+            userId:user.userId
+          });
+        tk1.save(function(err) {
+            if (err) { return done(err); }
+            return done(null, tokens);
+          });
+        }));
 
    
     passport.serializeUser((user, done)=>{

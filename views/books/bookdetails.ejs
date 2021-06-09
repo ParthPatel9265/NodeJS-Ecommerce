@@ -12,12 +12,14 @@
                     <p><%= book.description %></p>
                     <h3 class="lead ">Price: ₹ <%= book.price %></h3>
                     <hr class="mb-2">
-                    
-                    <% if(user.role ==='customer'){ %> 
-                    <form action="/users/cart/<%= book._id  %>?_method=PUT" class="d-inline" method="POST">
+                
+                    <% if(typeof user === 'undefined' || typeof user !== 'undefined' && user.carts.findIndex(item=> item.book.equals(book._id))===-1){ %> 
+                    <form action="/user/cart/<%= book._id  %>?_method=PUT" class="d-inline" method="POST">
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                     </form>
-               <% } %>
+                <% }else{ %>
+                    <p class="text-secondary">Already in Cart <a href="/user/dashboard" class="btn btn-primary d-inline">See Cart</a></p>
+                <% } %>  
                 </div>
             </div>
         </div>
