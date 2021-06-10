@@ -2,7 +2,7 @@ const User = require('../models/user');
 const Book = require('../models/book');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-
+const authenticate = require('../middleware/authenticate');
 exports.getLogin = (req, res, next) => {
     let message = req.flash('error');
     if (message.length > 0) {
@@ -108,6 +108,7 @@ exports.postSignup =  async (req, res) => {
 };
 
 exports.logOut = (req, res) => {    
+    res.clearCookie('remember_me');
     req.logOut();
     res.redirect('/user/login');
 }
@@ -196,3 +197,42 @@ exports.getdeletefromCart =  async (req, res) => {
       
     }
 };
+
+
+
+exports.postOrder = async (req, res) => {
+    
+    User.findById(req.user.id)
+    .populate("carts.book")
+    .exec( async(err, user)=>{
+        if(err){
+            req.flash('error', 'error in further processing')
+            res.redirect('/book');
+        }
+        else{
+            let totalPrice = 0;
+            user.carts.forEach(product => {
+                totalPrice += product.quantity * product.book.price
+            });
+            try
+            {
+            const order = new Order({
+                    user,
+                    details:user.carts,
+                    price: totalPrice
+                });
+            await order.save();
+            let updatedUser = req.user;
+            updatedUser.carts = [];
+            await User.findByIdAndUpdate(updatedUser.id, updatedUser);
+            req.flash('success', 'order successful');
+            res.redirect('/user/order');
+            }
+            catch (e)
+            {
+                 console.log(e);
+            }
+        }
+    });
+  };
+  

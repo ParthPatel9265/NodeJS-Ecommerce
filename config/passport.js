@@ -3,7 +3,7 @@ const RememberMeStrategy = require('passport-remember-me').Strategy;
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const uid = require('uid2');
-const Token = require('../models/Token');
+const Token = require('../models/token');
 const mongoose = require('mongoose');
 module.exports =  async (passport) => {
         passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password, done)=>{ 
@@ -64,6 +64,7 @@ module.exports =  async (passport) => {
             if (err) { return done(err); }
             return done(null, tokens);
           });
+       
         }));
 
    

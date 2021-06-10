@@ -6,7 +6,8 @@ const authenticate = require('../middleware/authenticate');
 const router = express.Router();
 const passport = require('passport');
 const uid = require('uid2');
-const Token = require('../models/Token');
+const Token = require('../models/token');
+const { log } = require('console');
 function generatetoken(number){
    return uid(number);
 }
@@ -43,7 +44,6 @@ router.post('/login',passport.authenticate('local', {
     });
   
   
-
 router.get('/signup', userController.getSignup);
 
 router.post('/signup', userController.postSignup);
@@ -58,6 +58,9 @@ router.delete('/cart/delete/:id', authenticate ,userController.getdeletefromCart
 
 router.post('/checkout', authenticate ,userController.postCheckout);
 
+router.post('/order', authenticate, userController.postOrder);
+
+// router.get('/order', authenticate, userController.getOrder);
 
 module.exports = router;
 
