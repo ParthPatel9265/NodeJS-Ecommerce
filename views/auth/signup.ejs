@@ -3,11 +3,17 @@
           
             <div class="container">
                 <h1 class="display-4 text-center">SignUp</h1>
-                <%- include ('../includes/message.ejs')  %>
+                <% if (errormsg) { %>
+                    <div class="alert alert-danger" role="alert">
+                        
+                            <p><%= errormsg %></p>
+                            
+                      </div>
+                      <% } %>
                 <hr>
                 
                     <div class="container">
-                        <form action="/user/signup" method="POST">
+                        <form action="/signup" method="POST">
                             <div class="form-group">
                                 <label for="name"><h4>Name</h4></label>
                                 <input required type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter your name" name="name" >
@@ -23,7 +29,7 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                         <div class="container text-left my-3">
-                            <p class="text-secondary">Already have an Account <a href="/user/login">Login</a></p>
+                            <p class="text-secondary">Already have an Account <a href="/login">Login</a></p>
                         </div>
                     </div>
             </div>

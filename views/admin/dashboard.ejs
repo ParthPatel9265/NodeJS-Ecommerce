@@ -1,14 +1,7 @@
 
 <%- include('../includes/header.ejs') %>
-<nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 lead">
-       BookStore
-    </span>
-    <span>
-        <a href="/book/add" class="btn btn-sm btn-primary">AddBook</a>
-        <a href="/user/logout" class="btn btn-sm btn-primary">Logout</a>  
-    </span>
-  </nav>
+<%- include('../includes/navigation.ejs') %>
+
   <div class="container admindash">
       <div class="jumbotron my-2">
             <div class="container container-fluid text-center">
@@ -55,7 +48,100 @@
                   </table>
             </div>
         </div>
-        
+        <div class="jumbotron p-3">
+          <div class="d-flex justify-content-center" style="font-size: 25px;">
+             All Customer
+          </div>
+          <div class="container mt-2" style="overflow-x: scroll;">
+              <table class="table table-bordered bg-light table-responsive-sm" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th scope="col">CustomerID</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">EmailID</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <% users.forEach(user=>{ %>
+                          <% if(user.role!=='admin') {%> 
+                              <tr>
+                                <td><%= user._id  %> </td>
+                                 <td style="text-transform: capitalize;"><%= user.name  %> </td>
+                                  <td><%= user.email  %> </td>   
+                              </tr>
+                      <% } %> 
+                      <% }) %>
+                  </tbody>
+                </table>
+          </div>
+      </div>
+      <div class="jumbotron p-3">
+          <div class="d-flex justify-content-center" style="font-size: 25px;">
+             Previous Orders 
+          </div>
+          <div class="container mt-2" style="overflow-x: scroll;">
+              <table class="table table-bordered bg-light table-responsive-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">OrderID</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Details</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Customer Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <% orders.forEach(order=>{ %>
+                              <tr>
+                                  <td><%= order._id  %> </td>
+                                  <td>₹ <%= order.price  %> </td>
+                                  <td>
+                                      <table class="table table-bordered bg-light table-responsive-sm">
+                                          <thead>
+                                            <tr>
+                                              <th scope="col">Title</th>
+                                              <th scope="col">Price</th>
+                                              <th scope="col">Quantity</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                              <% order.details.forEach(product =>{ %>
+                                                      <tr>
+                                                          <td><%= product.book.title  %> </td>
+                                                          <td >₹ <%= product.book.price  %> </td>
+                                                          <td>
+                                                              <%= product.quantity %> 
+                                                          </td>
+                                                      </tr>
+                                              <% }) %>
+                                          </tbody>
+                                        </table>
+                                  </td>
+                                  <td>
+                                     <%= order.createdAt  %>
+                                  </td>
+                                  <td>
+                                    ID:<%= order.user._id  %>
+                                    <br>
+                                      <%= order.user.name  %>
+                                      <br>
+                                          <%= order.user.email  %> 
+                                          
+
+                                      </span>
+                                      
+                                  </td>
+                              </tr>
+                      <% }) %>
+                  </tbody>
+                </table>
+          </div>
+      </div>
+  </div>
+      
+
+
     
     </div>
         

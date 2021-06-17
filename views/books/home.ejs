@@ -1,30 +1,5 @@
 <%- include('../includes/header.ejs') %>
-  <nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 lead">
-      Book Store
-    </span>
-    <span>
-      <% if(typeof user === 'undefined'){ %>
-          <a href="/user/login" class="btn btn-sm btn-primary">Login</a>
-      <% } else {%>
-
-        <% if( user.role === 'customer'){ %>
-        <span ><a href="/user/dashboard" class="btn  btn-primary ">Dashboard</a></span> 
-        <% }else {%>
-
-      
-          <span ><a href="/admin" class="btn  btn-primary ">Dashboard</a></span> 
-          <% } %>
-         
-        <span ><a href="/user/logout" class="btn  btn-primary ">logout</a></span> 
-
-        
-      <% } %>
-    
-
-    
-    </span>
-  </nav>
+<%- include('../includes/navigation.ejs') %>
   <div class="container">
     <%- include('../includes/message.ejs') %>
     <div class="jumbotron text-center my-1">

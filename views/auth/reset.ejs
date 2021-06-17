@@ -1,0 +1,32 @@
+
+<%- include('../includes/header.ejs') %>
+<div class="jumbotron jumbotron-fluid p-4">
+    
+    
+    <div class="container">    
+        <h1 class="display-4 text-center">Reset Password</h1>
+
+        <% if (errormsg) { %>
+        <div class="alert alert-danger" role="alert">
+            
+                <p><%= errormsg %></p>
+                
+          </div>
+          <% } %>
+      
+        <hr>
+       
+            <div class="container">
+                <form action="/reset" method="POST">
+                    <div class="form-group">
+                        <label for="email"><h4>Email</h4> </label>
+                        <input required type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your email " name="email" >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          
+            </div>
+    </div>
+</div>
+<%- include('../includes/footer.ejs') %>

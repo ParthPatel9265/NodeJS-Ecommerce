@@ -4,7 +4,7 @@ const Book = require('../models/book');
 exports.getBooks = async(req, res) => {
     try{
     const books = await Book.find({});
-    res.render('books/home', {books: books,user:req.user});
+    res.render('books/home', {books: books,user:req.user,path:'/book'});
     }
     catch(e){
         console.log(e);
@@ -12,7 +12,7 @@ exports.getBooks = async(req, res) => {
 }
 
 exports.getAdd =  (req, res) => {
-    res.render('books/add');
+    res.render('books/add',{path:'book/add'});
 }
 
 exports.postAdd =  async (req, res) => {

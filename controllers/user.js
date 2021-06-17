@@ -1,20 +1,24 @@
 const User = require('../models/user');
 const Book = require('../models/book');
+const Order = require('../models/order');
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const stripe = require('stripe')("sk_test_51J0lAwSBTKmiY4WqSjcNTjgClA0t7EauxFFDiUZ0wlyGPJ4TbaJtfrjk7Rnm2ztUnAaghWdZUanHyOYR3S2o9ih900RBphblgg");
 const authenticate = require('../middleware/authenticate');
-exports.getLogin = (req, res, next) => {
-    let message = req.flash('error');
-    if (message.length > 0) {
-      message = message[0];
-    } else {
-      message = null }
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+const { getMaxListeners } = require('../models/user');
 
-    res.render('users/login',
-    {
-        errormsg : message
-    });
-};
+const transporter = nodemailer.createTransport(
+    sendgridTransport({
+      auth: {
+        api_key:
+        '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'
+      }
+    })
+  );
+
 
 // exports.postLogin = async(req, res, next) => {
 //   const email = req.body.email;
@@ -50,68 +54,6 @@ exports.getLogin = (req, res, next) => {
 // };
 
 
-exports.getSignup= (req, res, next) => {
-  res.render('users/signup');
-};
-
-exports.postSignup =  async (req, res) => {
-  const emailexist = async(email) => {
-      try {
-          const exist = await User.findOne({ email: email });
-          if (exist)
-          { return true };
-          return false;
-      } catch (e) {
-          console.log(e);
-          return false;
-      }
-  };
-  const errors = [];
-  const user = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password
-  };
-  
-  if (user.password.length < 6) {
-      errors.push({
-          msg: `Password must contain atleast 6 Characters`
-      });
-  }
-  if (await emailexist(user.email)) {
-      errors.push({
-          msg: `Email is already signed up`
-      });
-  }
-  if (errors.length > 0) {
-      res.render('users/signup', { errors: errors, user: user });
-  } else {
-      
-          const hashedPassword = await bcrypt.hash(user.password, 12);
-          try {
-              const updateduser = new User({
-                  name: user.name,
-                  email: user.email,
-                  password: hashedPassword
-              });
-              await updateduser.save();
-              
-              res.redirect('/user/login');
-          } catch (e) {
-
-              console.log(e);
-              res.render('users/singup');
-
-          }
-       
-  }
-};
-
-exports.logOut = (req, res) => {    
-    res.clearCookie('remember_me');
-    req.logOut();
-    res.redirect('/user/login');
-}
 
 exports.addCart = async(req,res) => {
     try{
@@ -122,7 +64,7 @@ exports.addCart = async(req,res) => {
                 console.log(err);
                
             }else{
-                 res.redirect('/user/dashboard');
+                 res.redirect('/user/cart');
             }
         });
     }catch(e){
@@ -130,23 +72,17 @@ exports.addCart = async(req,res) => {
         
     }
 }
-exports.getDashboard = (req, res) => {
-    if(req.user.role !== 'admin'){
+exports.getCart = (req, res) => {
     
-            User.findById(req.user.id)
+          User.findById(req.user.id)
             .populate("carts.book")
             .exec((err, user) => {
                 if (err) {
                     res.redirect('/book');
                 } else {
-                    // console.log(user.carts);
-                    res.render('users/dashboard', { user: user });
+                    res.render('users/cart', { user: user,path:'/user/cart'});
                 }
             }); 
-        
-    }else{
-         res.redirect('/admin');
-    }
   };
 
 exports.getdeletefromCart =  async (req, res) => {
@@ -160,7 +96,7 @@ exports.getdeletefromCart =  async (req, res) => {
                 
             }else{
                   // console.log(user);
-                 res.redirect('/user/dashboard');
+                 res.redirect('/user/cart');
             }
         });
     }catch(e){
@@ -199,9 +135,12 @@ exports.getdeletefromCart =  async (req, res) => {
 };
 
 
-
 exports.postOrder = async (req, res) => {
-    
+    const {stripeEmail, stripeToken } = req.body;
+    const customer = await stripe.customers.create({
+        email: stripeEmail,
+        source: stripeToken,
+    });
     User.findById(req.user.id)
     .populate("carts.book")
     .exec( async(err, user)=>{
@@ -216,6 +155,13 @@ exports.postOrder = async (req, res) => {
             });
             try
             {
+            const charge = await stripe.charges.create({
+                customer: customer.id,
+                description: "Order of Books",
+                amount: totalPrice * 100,
+                currency: 'inr',
+            });
+            
             const order = new Order({
                     user,
                     details:user.carts,
@@ -225,8 +171,47 @@ exports.postOrder = async (req, res) => {
             let updatedUser = req.user;
             updatedUser.carts = [];
             await User.findByIdAndUpdate(updatedUser.id, updatedUser);
+            let message = `<table>
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+           <tbody>
+            `;
+            user.carts.forEach(item => {
+            message += `
+            <tr>
+                <td> ${item.book.title} </td>
+                <td>₹ ${item.book.price} </td>
+                <td>${item.quantity}</td>
+            </tr>
+            `
+            });
+            message+=`
+            </tbody>
+            </table>
+           
+            <h3>Total Amount: ₹ ${totalPrice}</h3>
+            <p>Download order receipt from <a href=${charge.receipt_url}>here</a></p>
+            
+            <h4>Thanks For Shopping With Us</h4>
+            <p>admin,<br> Book Store</p>
+            </body>`
+            transporter.sendMail({
+                to: "patel.parth.9@ldce.ac.in",
+                from: 'parthpatel9265@gmail.com',
+    
+                subject: 'Order succeeded!',
+                html: message
+              });
+
+
             req.flash('success', 'order successful');
             res.redirect('/user/order');
+            
             }
             catch (e)
             {
@@ -236,3 +221,10 @@ exports.postOrder = async (req, res) => {
     });
   };
   
+
+exports.getOrder = async (req, res) => {
+    const orders = await Order.find({user: req.user}).sort({createdAt:-1}).populate("details.book").exec();
+    res.render('users/orders', {orders,user:req.user,path:'/user/order'});
+};
+
+

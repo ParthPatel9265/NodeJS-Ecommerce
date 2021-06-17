@@ -9,7 +9,6 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const app = express();
 
-
 const MONGODB_URI =
 'mongodb+srv://parth:parth@2912@cluster0.a5bgq.mongodb.net/web?retryWrites=true&w=majority';
 
@@ -23,7 +22,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
        
-        maxAge:5*1000
+        maxAge:10000*1000
         
     }
    
@@ -32,6 +31,7 @@ app.use(session({
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
 const bookRoutes = require('./routes/book');
+const authRoutes = require('./routes/auth');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
@@ -46,12 +46,13 @@ app.use(passport.authenticate('remember-me'));
 app.use(flash());
 
 app.get('/', (req, res) => {
-     res.redirect('/user/login');
+     res.redirect('/book');
 });
 
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/book', bookRoutes);
+app.use(authRoutes);
 
 app.listen(4000,() => console.log("started"));
   

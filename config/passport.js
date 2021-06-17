@@ -41,40 +41,41 @@ module.exports =  async (passport) => {
     })); 
     
 
-    passport.use(new RememberMeStrategy(
+   passport.use(new RememberMeStrategy(
+
     function(token, done) {
-      Token.findOne({ token: token }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        return done(null, user);
-      });
-      },
-    
+    Token.findOneAndRemove({ token: token })
+    .populate('userId')
+    .exec( function (err, doc) {
+        if(err) return done(err);
+        if(!doc) return done(null,false);
+        return done(null, doc.userId);
+    });
+    },
+
     function(user, done) {
-        console.log(user);
         function generatetoken(number){
             return uid(number);
          }
-        tokens=  generatetoken(64);
+        tokens= generatetoken(64);
         var tk1 = new Token({  
             token: tokens,
-            userId:user.userId
+            userId:user._id
           });
         tk1.save(function(err) {
             if (err) { return done(err); }
             return done(null, tokens);
           });
-       
         }));
 
    
     passport.serializeUser((user, done)=>{
-        console.log(user.id);
+
         return done(null, user.id);
     });
     passport.deserializeUser((id, done)=>{
+       
         User.findById(id, (err, user)=>{
-            console.log(user);
             return done(err, user);
         });
     });

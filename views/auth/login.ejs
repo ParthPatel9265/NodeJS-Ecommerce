@@ -17,7 +17,7 @@
         <hr>
        
             <div class="container">
-                <form action="/user/login" method="POST">
+                <form action="/login" method="POST">
                     <div class="form-group">
                         <label for="email"><h4>Email</h4> </label>
                         <input required type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your email " name="email" >
@@ -25,6 +25,9 @@
                     <div class="form-group">
                         <label for="password"><h4>Password</h4> </label>
                         <input required type="password" class="form-control" id="password" placeholder="Password" name="password" >
+                        <div class="centered">
+                            <a href="/reset">Reset Password</a>
+                        </div>
                     </div>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me" value="true">
@@ -32,8 +35,9 @@
                       </div>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
+               
                 <div class="container text-left my-3">
-                    <p class="text-secondary">Don't have an Account <a href="/user/signup">SignUp</a></p>
+                    <p class="text-secondary">Don't have an Account <a href="/signup">SignUp</a></p>
                 </div>
             
             </div>

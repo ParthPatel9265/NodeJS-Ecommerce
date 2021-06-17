@@ -1,18 +1,10 @@
 <%- include ('../includes/header.ejs') %>
-<nav class="navbar navbar-light bg-light">
-    <span class="navbar-brand mb-0 lead">
-             Book Store
-    </span>
-    <span>
+<%- include ('../includes/navigation.ejs') %>
 
-        <a href="/book" class="btn btn-primary">HomePage</a>
-        <a href="/user/logout" class="btn btn-primary">Logout</a>  
-    </span>
-  </nav>
   <div class="container">
       <div class="jumbotron my-2">
             <div class="container container-fluid text-center">
-                <h1 class="display-4"><strong class="capital">Dashboard</strong></h1>
+                <h1 class="display-4"><strong class="capital">Cart</strong></h1>
                 <hr class="my-2">
                 <h5>
                    <span><%= user.email  %></span>
@@ -26,8 +18,9 @@
                 <button type="button" class="lead btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
                     Checkout
                 </button>
-            <% } %> 
+                <% } %> 
             </div>
+            <% if(user.carts.length !== 0)  {%> 
             <div class="container mt-2">
                 <table class="table table-bordered bg-light table-responsive-sm">
                     <thead>
@@ -57,6 +50,7 @@
                     </tbody>
                   </table>
             </div>
+            <% } %> 
         </div>
     <% if(user.carts.length !== 0)  {%> 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -1,1 +1,63 @@
-<h3>order page</h3>
+
+<%- include ('../includes/header.ejs') %>
+<%- include ('../includes/navigation.ejs') %>
+
+  <%- include ('../includes/message.ejs')  %>
+  <div class="container mt-3">
+    
+        <div class="jumbotron p-3">
+            <div class="d-flex justify-content-around" style="font-size: 25px;">
+                <span>Order Details</span> 
+            </div>
+            <hr class="my-3">
+            <div class="container mt-2">
+                <table class="table table-bordered bg-light table-responsive-sm">
+                    <thead>
+                      <tr>
+                       
+                        <th scope="col">Amount</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <% orders.forEach(order=>{ %>
+                                <tr>
+                                    
+                                    <td>₹ <%= order.price  %> </td>
+                                    <td>
+                                        <table class="table table-bordered bg-light table-responsive-sm">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% order.details.forEach(product =>{ %>
+                                                        <tr>
+                                                            <td><%= product.book.title  %> </td>
+                                                            <td>₹ <%= product.book.price  %> </td>
+                                                            <td>
+                                                                <%= product.quantity %> 
+                                                            </td>
+                                                        </tr>
+                                                <% }) %>
+                                            </tbody>
+                                          </table>
+                                    </td>
+                                    <td>
+                                       <%= order.createdAt  %>
+                                    </td>
+                                </tr>
+                        <% }) %>
+                    </tbody>
+                  </table>
+            </div>
+            <hr class="my-3">
+        </div>
+  </div>
+
+        <%- include ('../includes/footer.ejs') %>
