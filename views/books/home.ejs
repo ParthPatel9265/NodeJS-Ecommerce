@@ -4,8 +4,9 @@
     <%- include('../includes/message.ejs') %>
     <div class="jumbotron text-center my-1">
         <h1 class="display-4 ml-2"> Books</h1>
-  
+    
     </div>
+   
     <br>
     <div class="container mb-4 books">
       <% books.forEach(book => { %>
@@ -19,6 +20,8 @@
           </div>
       </div>
      <% }) %> 
-    </div>
+     </div>
+     <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+  
   </div>
   <%- include('../includes/footer.ejs') %>

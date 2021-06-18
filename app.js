@@ -32,6 +32,7 @@ const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
 const bookRoutes = require('./routes/book');
 const authRoutes = require('./routes/auth');
+const commentRoutes = require('./routes/bookcomment');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/book', bookRoutes);
+app.use('/book/:id/bookcomment',commentRoutes);
 app.use(authRoutes);
 
 app.listen(4000,() => console.log("started"));

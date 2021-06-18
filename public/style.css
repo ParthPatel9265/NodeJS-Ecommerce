@@ -33,6 +33,23 @@ nav span {
     top:1em;
 }
 
+
+.pagination a {
+    text-decoration: none;
+    color:darkslategrey;
+    padding: 0.5rem;
+    border: 1px solid darkslategrey;
+    margin: 0 1rem;
+  }
+  
+  .pagination a:hover,
+  .pagination a:active,
+  .pagination a.active {
+    background: darkslategrey;
+    color: white;
+  }
+  
+
 @media only screen and (max-width: 600px){
     .books {
         display: flex;

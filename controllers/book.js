@@ -1,11 +1,34 @@
 
 const Book = require('../models/book');
 
+const books_per_page = 3;
+
 exports.getBooks = async(req, res) => {
+   
+    const page = +req.query.page || 1;
+    let totalBook;
+  
     try{
-    const books = await Book.find({});
-    res.render('books/home', {books: books,user:req.user,path:'/book'});
+      const countbook = await Book.find().countDocuments()
+      totalBook = countbook;
+      try{
+      const books = await Book.find().skip((page - 1) * books_per_page).limit(books_per_page);
+      res.render('books/home', {
+        books:books,
+        user:req.user,
+        path: '/book',
+        currentPage: page,
+        hasNextPage: books_per_page * page < totalBook,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalBook / books_per_page)
+      });
+      }
+      catch(e){
+        console.log(e);
     }
+}
     catch(e){
         console.log(e);
     }
@@ -71,8 +94,8 @@ exports.delete = async (req, res) => {
 };
 exports.getBookDetails = async(req, res)=>{
     try{
-        const book = await Book.findById(req.params.id);
-        res.render('books/bookdetails', {book: book, user: req.user});
+        const book = await Book.findById(req.params.id).populate('comments').exec();
+        res.render('books/bookdetails', {book: book, user: req.user,path:'/book/bookdetails/${req.params.id}'});
     }
     catch(e){
         console.log(e);

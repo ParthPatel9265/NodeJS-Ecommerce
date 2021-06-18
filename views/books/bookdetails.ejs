@@ -26,8 +26,31 @@
                 </div>
             </div>
         </div>
-      
+        <div class="jumbotron p-3">
+            <div class="d-flex">
+                <a href="/book/<%= book._id  %>/bookcomment/add" class="btn btn-secondary">Add a Comment</a>
+            </div>
+            <div class="container mt-2">
+                <ul class="list-group">
+                    <% book.comments.forEach(comment=>{ %>
+                        <li class="list-group-item">
+                            <span class="lead text-primary capital font-weight-bold"><%= comment.publisher.name  %></span>
+                            <p class="text-dark font-weight-bold"><%= comment.title  %> </p>
+                            <p><%= comment.content  %> </p>     
+                            <p class="text-secondary"><%= comment.createdAt.toLocaleDateString() %> <%= comment.createdAt.toLocaleTimeString() %></p>
+                           
+                            <% if(typeof user !== 'undefined' && comment.publisher.id.equals(user._id)){ %> 
+                                <a href="/book/<%= book._id  %>/bookcomment/<%= comment._id %>/edit" class="btn btn-primary">Edit</a>
+                                <form action="/book/<%= book._id %>/bookcomment/<%= comment._id %>/delete?_method=DELETE" class="d-inline" method="POST">
+                                    <button type="submit" class="btn btn-primary">Delete </button>
+                                </form>
+                            <% } %> 
+                        </li>
+                    <% }) %>
+                </ul> 
+            </div>
+        </div>
     </div>
 
 
-    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/footer.ejs') %>    

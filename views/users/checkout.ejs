@@ -1,6 +1,5 @@
   
 <%- include ('../includes/header.ejs') %>
-<%- include ('../includes/navigation.ejs') %>
 
 
   <div class="container mt-3">
@@ -39,6 +38,8 @@
                         </tr>
                     </tbody>
                   </table>
+                  <div class="text-center"> <a type="button" href="/user/cart" class="btn btn-primary">Cancel</a>
+                  </div>
                   <hr class="my-3">
                   <div class="row">
                       <form action="/user/order" method="POST" class="mx-auto">
