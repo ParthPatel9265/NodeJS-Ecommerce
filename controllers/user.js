@@ -4,7 +4,7 @@ const Order = require('../models/order');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const stripe = require('stripe')("sk_test_51J0lAwSBTKmiY4WqSjcNTjgClA0t7EauxFFDiUZ0wlyGPJ4TbaJtfrjk7Rnm2ztUnAaghWdZUanHyOYR3S2o9ih900RBphblgg");
+const stripe = require('stripe')("##################");
 const authenticate = require('../middleware/authenticate');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport(
     sendgridTransport({
       auth: {
         api_key:
-        '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'
+        '##############################'
       }
     })
   );
